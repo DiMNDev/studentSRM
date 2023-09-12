@@ -1,23 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import "bootswatch/dist/darkly/bootstrap.min.css";
+import Navbar from "./components/navbar/navbar";
+import { Route, Routes } from "react-router-dom";
+import RecordList from "./components/recordList";
+import Create from "./components/create";
+import Edit from "./components/edit";
+
+<Routes>
+  <Route exact path="/" element={<RecordList />} />
+</Routes>;
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
     </div>
   );
 }
