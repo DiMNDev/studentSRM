@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Loader from "./loader/loader";
+import Loader from "./Loader/Loader";
+import style from "../styles/list.module.css";
 
 const Record = (props) => (
-  <tr>
+  <tr className={style.row}>
     <td>{props.record.firstName}</td>
     <td>{props.record.lastName}</td>
     <td>{props.record.email}</td>
     <td>{props.record.age}</td>
     <td>{props.record.currentCollege}</td>
     <td>
-      <Link className="btn btn-link" to={`/edit/${props.record._id}`}>
+      <Link
+        className={style.actionLink}
+        to={`/students/edit/${props.record._id}`}
+      >
         Edit
       </Link>
       |
       <button
-        className="btn btn-link"
+        className={style.actionBtn}
         onClick={() => {
           props.deleteRecord(props.record._id);
         }}
@@ -29,7 +33,6 @@ const Record = (props) => (
 export default function RecordList() {
   const [loading, setLoading] = useState(true);
   const [records, setRecords] = useState([]);
-  loading ? <Loader /> : recordList();
   // This method fetches the records from the database.
   useEffect(() => {
     setLoading(true);
@@ -37,7 +40,7 @@ export default function RecordList() {
       const response = await fetch(
         `https://intro-to-node.onrender.com/students`
       );
-      console.log(response);
+      // console.log(response);
       setLoading(false);
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
@@ -46,7 +49,7 @@ export default function RecordList() {
       }
 
       const records = await response.json();
-      setRecords(records);
+      setRecords(records.allStudents);
     }
 
     getRecords();
@@ -90,7 +93,7 @@ export default function RecordList() {
             <th>Modify Student</th>
           </tr>
         </thead>
-        <tbody>{recordList()}</tbody>
+        <tbody>{loading ? <Loader /> : recordList()}</tbody>
       </table>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
+import style from "../styles/form.module.css";
 
 export default function Edit() {
   const [form, setForm] = useState({
@@ -19,7 +20,7 @@ export default function Edit() {
     async function fetchData() {
       const id = params.id.toString();
       const response = await fetch(
-        `Please include your own student API here/{params.id.toString()}`
+        `https://intro-to-node.onrender.com/students/${id}`
       );
 
       if (!response.ok) {
@@ -35,7 +36,7 @@ export default function Edit() {
         return;
       }
 
-      setForm(record);
+      setForm(record.student);
     }
 
     fetchData();
@@ -62,7 +63,7 @@ export default function Edit() {
 
     // This will send a post request to update the data in the database.
     await fetch(`https://intro-to-node.onrender.com/students/${params.id}`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify(editedPerson),
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +75,7 @@ export default function Edit() {
 
   // This following section will display the form that takes input from the user to update the data.
   return (
-    <div>
+    <div className={style.formContainer}>
       <h3>Update Record</h3>
       <form onSubmit={onSubmit}>
         <div className="form-group">
@@ -109,7 +110,7 @@ export default function Edit() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="age">Music Genre</label>
+          <label htmlFor="age">Age</label>
           <input
             type="text"
             className="form-control"

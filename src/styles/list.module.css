@@ -1,0 +1,45 @@
+/* 
+btn colors
+-#00bc8c stationary
+-#009670 hover,active
+*/
+
+.actionBtn {
+  background-color: #bc0000;
+  color: aliceblue;
+  border-radius: 10px;
+  border: 1px solid #960000;
+  margin-left: 5px;
+}
+.actionBtn:hover {
+  background-color: #960000;
+}
+
+.actionLink {
+  background-color: #bcbc00;
+  padding: 5px;
+  border-radius: 10px;
+  color: aliceblue;
+  text-shadow: none !important;
+  text-decoration: none;
+  margin-right: 5px;
+}
+.actionLink:hover {
+  color: aliceblue;
+  background-color: #969300;
+}
+
+.row {
+  background-color: #00bc8c;
+  color: red !important;
+}
+
+td {
+  transition: all 0.5s;
+}
+
+table tbody tr:hover td {
+  cursor: cell;
+  background-color: #00bc8c;
+  text-shadow: 2px 2px 2px #009670;
+}
