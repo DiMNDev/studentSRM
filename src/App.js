@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Create from "./components/create";
 import Edit from "./components/edit";
 import RecordList from "./components/recordList";
+require("./styles/app.module.css");
 
 function App() {
   return (

@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import style from "../../styles/navbar.module.css";
 
 const Navbar = () => {
   return (
@@ -24,9 +25,11 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarColor02">
+          <div
+            className={`collapse navbar-collapse ${style.navbarCollapse}`}
+            id="navbarColor02"
+          >
             <ul className="navbar-nav me-auto">
-              <li className="nav-item"></li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/students/create">
                   New Student
