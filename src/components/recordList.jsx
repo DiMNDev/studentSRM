@@ -2,33 +2,31 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "./Loader/Loader";
 import style from "../styles/list.module.css";
+import TogglePassword from "./password";
 
-const Record = (props) => (
-  <tr className={style.row}>
-    <td>{props.record.firstName}</td>
-    <td>{props.record.lastName}</td>
-    <td>{props.record.email}</td>
-    <td>{props.record.age}</td>
-    <td>{props.record.currentCollege}</td>
-    <td>
-      <Link
-        className={style.actionLink}
-        to={`/students/edit/${props.record._id}`}
-      >
-        Edit
-      </Link>
-      |
-      <button
-        className={style.actionBtn}
-        onClick={() => {
-          props.deleteRecord(props.record._id);
-        }}
-      >
-        Delete
-      </button>
-    </td>
-  </tr>
-);
+const Record = (props) => {
+  return (
+    <tr className={style.row}>
+      <td>{props.record.firstName}</td>
+      <td>{props.record.lastName}</td>
+      <td>{props.record.email}</td>
+      <td>{props.record.age}</td>
+      <td>{props.record.currentCollege}</td>
+      <td className={style.modifyContainer}>
+        <Link
+          className={style.actionLink}
+          to={`/students/edit/${props.record._id}`}
+        >
+          Edit
+        </Link>
+        <TogglePassword
+          record={props.record._id}
+          deleteRecord={props.deleteRecord}
+        />
+      </td>
+    </tr>
+  );
+};
 
 export default function RecordList() {
   const [loading, setLoading] = useState(true);
@@ -40,7 +38,6 @@ export default function RecordList() {
       const response = await fetch(
         `https://intro-to-node.onrender.com/students`
       );
-      // console.log(response);
       setLoading(false);
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
@@ -56,24 +53,37 @@ export default function RecordList() {
   }, [records.length]);
 
   // This method will delete a record
-  async function deleteRecord(id) {
-    await fetch(`https://intro-to-node.onrender.com/students/${id}`, {
-      method: "DELETE",
-    });
-
-    const newRecords = records.filter((el) => el._id !== id);
-    setRecords(newRecords);
+  async function deleteRecord(id, pin) {
+    const request = { pin: pin };
+    const response = await fetch(
+      `https://intro-to-node.onrender.com/students/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+        body: JSON.stringify(request),
+      }
+    );
+    //Error Handling
+    if (!response.ok) {
+      console.log(response.statusText);
+      return;
+    }
+    //Log Status
+    const status = await response.text();
+    console.log(status);
+    if (status !== "Invalid pin, deletion failed") {
+      const newRecords = records.filter((el) => el._id !== id);
+      setRecords(newRecords);
+    }
   }
 
   // This method will map out the records on the table
   function recordList() {
     return records.map((record) => {
       return (
-        <Record
-          record={record}
-          deleteRecord={() => deleteRecord(record._id)}
-          key={record._id}
-        />
+        <Record record={record} deleteRecord={deleteRecord} key={record._id} />
       );
     });
   }
